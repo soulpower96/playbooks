@@ -1,0 +1,5 @@
+---
+- hosts: remote
+  gather_facts: no
+  roles:
+    - redhatgov.copy_local_pub_key
