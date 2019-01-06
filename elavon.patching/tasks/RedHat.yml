@@ -1,0 +1,21 @@
+---
+
+- name: Clean YUM cache
+  command: yum clean all
+  args:
+    warn: false
+  changed_when: false
+
+
+- name: Update YUM packages
+  yum:
+    name: '*'
+    state: latest
+    update_only: "yes"
+
+
+- name: Restart server
+  shell: sleep 1 && shutdown -r now "Reboot triggered by Ansible" && sleep 1
+  async: 1
+  poll: 0
+  ignore_errors: true
