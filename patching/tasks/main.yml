@@ -1,0 +1,5 @@
+---
+  
+- name: If server belongs to RedHat Family
+  include_tasks: RedHat.yml
+  when: ansible_os_family == 'RedHat'

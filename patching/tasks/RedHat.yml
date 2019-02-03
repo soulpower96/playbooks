@@ -1,0 +1,35 @@
+---
+
+- name: Clean YUM cache
+  command: yum clean all
+  args:
+    warn: false
+  changed_when: false
+
+- name: delete yum cache
+  command: rm -rf /var/cache/yum
+
+- name: Enable the  RHEL7 Repos
+  rhsm_repository:
+    name: rhel-7-server*
+    state: enabled
+  when: ansible_distribution_major_version == "7"
+
+- name: Enable the RHEL6 Repos
+  rhsm_repository:
+     name: rhel-6-server*
+     state: enabled
+  when: ansible_distribution_major_version == "6"
+
+- name: Update YUM packages
+  yum:
+    name: '*'
+    state: latest
+    update_only: "yes"
+
+
+- name: Restart server
+  shell: sleep 1 && shutdown -r now "Reboot triggered by Ansible" && sleep 1
+  async: 1
+  poll: 0
+  ignore_errors: true
